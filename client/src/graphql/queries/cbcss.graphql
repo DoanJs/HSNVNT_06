@@ -1,0 +1,5 @@
+query {
+  cbcss(utilsParams: {}) {
+    MaCBCS
+  }
+}
