@@ -32,8 +32,6 @@ import { UtilsParamsInput } from 'src/utils/type/UtilsParams.input';
 import { CBCS } from './CBCS.model';
 import { CBCSsService } from './CBCSs.service';
 import { CBCSInput } from './type/CBCS.Input';
-import { InsertGuard } from 'src/authPassport/authorization/insert.guard';
-import { ReadGuard } from 'src/authPassport/authorization/read.guard';
 
 @Resolver(() => CBCS)
 @UseGuards(GraphQLGuard)
@@ -41,7 +39,6 @@ export class CBCSsResolver {
   constructor(private cbcssService: CBCSsService) {}
 
   @Query((returns) => [CBCS])
-  @UseGuards(ReadGuard)
   cbcss(@Args('utilsParams') utilsParams: UtilsParamsInput): Promise<CBCS[]> {
     return this.cbcssService.cbcss(utilsParams);
   }
