@@ -48,25 +48,18 @@ import { TinhChatDTsModule } from './tinhchatDTs/TinhChatDTs.module';
 import { TonGiaosModule } from './tongiaos/TonGiaos.module';
 import { TramCTsModule } from './tramCTs/TramCTs.module';
 import { TKNhanhsModule } from './timkiemnhanhs/TKNhanhs.module';
+import { databaseMSSQLConfig } from './utils/mssql/query';
 require('dotenv').config();
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'mssql',
-      host: 'localhost',
-      port: 1433,
-      username: process.env.USERNAME_MSSQL,
-      password: process.env.PASSWORD_MSSQL,
-      database: 'HSNVNT_06',
-      // autoLoadEntities: true,
-      entities: [__dirname + '/../**/*.entity{.ts,.js}'],
-      logging: true,
-      // synchronize: true, ///not use production env
-      options: {
-        trustServerCertificate: true,
-      },
-    }),
+    TypeOrmModule.forRoot(
+      databaseMSSQLConfig(
+        process.env.USERNAME_MSSQL,
+        process.env.PASSWORD_MSSQL,
+        'HSNVNT_06',
+      ),
+    ),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: true,
@@ -114,9 +107,9 @@ require('dotenv').config();
     TKNhanhsModule,
     AccountModule,
     AuthPassportModule,
-    DataLoaderModule
+    DataLoaderModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}

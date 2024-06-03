@@ -4,6 +4,7 @@ import { InjectConnection } from '@nestjs/typeorm';
 import { Strategy } from 'passport-local';
 import { Connection } from 'typeorm';
 import { AuthPassportService } from './AuthPassport.service';
+import { databaseMSSQLConfig } from 'src/utils/mssql/query';
 
 @Injectable()
 export class LoginLocalStrategy extends PassportStrategy(
@@ -18,25 +19,10 @@ export class LoginLocalStrategy extends PassportStrategy(
   }
 
   async validate(username: string, password: string): Promise<any> {
-    console.log(username, password);
     //xac dinh ai dang dang nhap vao --> reconnect DB
     await this.connection.close();
-    console.log('closed');
-    await this.connection.setOptions({
-      type: 'mssql',
-      host: 'localhost',
-      port: 1433,
-      username: 'userTest',
-      password: '123',
-      database: 'HSNVNT_06',
-      entities: [__dirname + '/../**/*.entity{.ts,.js}'],
-      logging: true,
-      // synchronize: true, ///not use production env
-      options: {
-        trustServerCertificate: true,
-      },
-    }).connect();
-
+    await this.connection.setOptions(databaseMSSQLConfig(username, password, 'HSNVNT_06')).connect();
+   
     const account = await this.authPassportService.validateLogin(
       username,
       password,

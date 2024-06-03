@@ -1,3 +1,4 @@
+import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { SP_CHANGE_BAOCAOKQGH_Input } from '../type/SP_CHANGE_BAOCAOKQGH.input';
 import { SP_CHANGE_BAOCAOKQXMDIACHI_Input } from '../type/SP_CHANGE_BAOCAOKQXMDIACHI.input';
 import { SP_CHANGE_BAOCAOKQXMQUANHE_Input } from '../type/SP_CHANGE_BAOCAOKQXMQUANHE.input';
@@ -13,6 +14,26 @@ import { SP_CHANGE_KEHOACHTSNT_Input } from '../type/SP_CHANGE_KEHOACHTSNT.input
 import { SP_CHANGE_PHUONGTIENNV_Input } from '../type/SP_CHANGE_PHUONGTIENNV.input';
 import { SP_CHANGE_QUYETDINHTSNT_Input } from '../type/SP_CHANGE_QUYETDINHTSNT.input';
 import { SP_CHANGE_TRAMCT_Input } from '../type/SP_CHANGE_TRAMCT.input';
+
+export const databaseMSSQLConfig = (
+  username: string,
+  password: string,
+  database: string,
+): TypeOrmModuleOptions => ({
+  type: 'mssql',
+  host: 'localhost',
+  port: 1433,
+  username,
+  password,
+  database,
+  // autoLoadEntities: true,
+  entities: [__dirname + '/../**/*.entity{.ts,.js}'],
+  logging: true,
+  // synchronize: true, ///not use production env
+  options: {
+    trustServerCertificate: true,
+  },
+});
 
 export const SP_GET_DATA = (
   NameTable?: string,
